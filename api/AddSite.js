@@ -27,16 +27,39 @@ export default function AddSite (req, res) {
           if (row.count) {
             resJson.status = 300;
             resJson.text = 'Site ' + clearURL + ' exist from ' + new Date(row.date_create);
+            res.json(resJson);
           } else {
-            db
-              .prepare("INSERT INTO site_list (title, status, date_create, date_update) VALUES (?, ?, ?, ?)")
-              .run(clearURL, 0, new Date(), new Date())
-            ;
-            resJson.status = 200;
-            resJson.text = 'Site ' + clearURL + ' add success';
-          }
-
-          res.json(resJson);
+            db.run(
+              "INSERT INTO site_list (title, status, date_create) VALUES (?, ?, ?)",
+              [clearURL, 0, new Date()],
+              function (err, row) {
+                if (err) {
+                  resJson.status = 500;
+                  resJson.text = 'db error.';
+                  resJson.body = err;
+                  res.json(resJson);
+                } else {
+                  const siteID = this.lastID;
+                  db.run(
+                    "INSERT INTO page_list (title, site_id, status, date_create) VALUES (?, ?, ?, ?)",
+                    ['/', siteID, 0, new Date()],
+                    function (err, row) {
+                      if (err) {
+                        resJson.status = 500;
+                        resJson.text = 'db error.';
+                        resJson.body = err;
+                        res.json(resJson);
+                      } else {
+                        resJson.status = 200;
+                        resJson.text = 'Site ' + clearURL + ' add success under ID - ' + siteID;
+                        res.json(resJson);
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          }         
       });
     });
   }
