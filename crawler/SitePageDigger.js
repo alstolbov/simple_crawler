@@ -2,7 +2,7 @@ import http from 'http';
 import HtmlParser from './HtmlParser';
 import utils from './api-utils';
 import Options from '../options';
-
+// import {getFulPath, parseUrl} from '../utils/url-utils';
 const db = Options.db;
 
 function getPage(site, next) {
@@ -13,6 +13,7 @@ function getPage(site, next) {
       next(site, page);
     } else {
       console.log('no pages!');
+      // SitePageDigger();
     }
   });
 }
@@ -57,7 +58,8 @@ function callPage(site, page) {
 }
 
 export default function SitePageDigger() {
-
+  // let u = 'http://asas.com/';
+  // console.log(getFulPath(u));
   db.each("select * from site_list where status = '0'", function(err, site) {
     console.log(site.title);
     getPage(
@@ -65,4 +67,5 @@ export default function SitePageDigger() {
       callPage
     );
   });
+
 };
