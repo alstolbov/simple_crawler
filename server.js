@@ -1,6 +1,9 @@
 import http from 'http';
 import express from 'express';
+import bodyParser from 'body-parser';
+
 import ApiRoutes from './ApiRoutes';
+import CrawlerApp from './CrawlerApp';
 
 export function Server() {
 
@@ -9,6 +12,9 @@ export function Server() {
   const apiRoutes = ApiRoutes(express);
   const port = process.env.PORT || 3000;
 
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+
   app.use('/api', apiRoutes);
   app.use('*', function (req, res) {
     res.send('404');
@@ -16,4 +22,7 @@ export function Server() {
 
   httpServer.listen(port);
   console.log('Server listening on port', port);
+
+  CrawlerApp();
+
 }
