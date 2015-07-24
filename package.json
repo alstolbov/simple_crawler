@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "./node_modules/.bin/babel-node ./index.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +18,13 @@
   },
   "homepage": "https://github.com/alstolbov/simple_crawler#readme",
   "dependencies": {
+    "babel": "^5.8.3",
     "cheerio": "^0.19.0",
+    "es6-module-loader": "^0.17.3",
+    "express": "^4.13.1",
     "iconv-lite": "^0.4.11",
-    "request": "^2.60.0"
+    "sqlite3": "^3.0.9",
+    "traceurl": "^0.2.8",
+    "url-parse": "^1.0.2"
   }
 }
