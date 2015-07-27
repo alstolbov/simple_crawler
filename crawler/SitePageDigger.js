@@ -1,19 +1,19 @@
 import http from 'http';
 import HtmlParser from './HtmlParser';
-import utils from './api-utils';
+import resToApi from './utils/resToApi.js';
 import Options from '../options';
-// import {getFulPath, parseUrl} from '../utils/url-utils';
+
 const db = Options.db;
 
 function getPage(site, next) {
   let page;
-  // console.log(db);
-  db.get("select * from page_list where site_id = '" + site.id + "' AND status = '0' LIMIT 1", function(err, page) {
+  db.get("select * from page_list where site_id = '" + site.id + "' AND status = '0' ORDER by date_create LIMIT 1", function(err, page) {
     if (page) {
       next(site, page);
     } else {
-      console.log('no pages!');
-      // SitePageDigger();
+      console.log('All site page complete.');
+      db.run("UPDATE site_list SET status = 1, date_update = ? WHERE id = ?", new Date(), site.id);
+      SitePageDigger();
     }
   });
 }
@@ -28,19 +28,23 @@ function callPage(site, page) {
   const request = http.request(options, function (res) {
     res.on('data', function (data) {
       resHTML += data;
-      // console.log("The part was getted!");
+      // console.log(data);
     });
     res.on('end', function () {
+      // console.log('html:', resHTML);
       const parser = new HtmlParser(resHTML);
       const links = parser.getLinks();
       if (links.length) {
-        utils.addLink(
+        db.run("UPDATE page_list SET status = 1, date_update = ? WHERE id = ?", new Date(), page.id);
+        resToApi.pushLink(
           {
-            pageId: page.id,
-            data: links
+            site: site,
+            page: page,
+            links: links
           },
           function (err, res) {
             console.log('END');
+            // restart page digger
             getPage(
               site,
               callPage
@@ -60,12 +64,18 @@ function callPage(site, page) {
 export default function SitePageDigger() {
   // let u = 'http://asas.com/';
   // console.log(getFulPath(u));
-  db.each("select * from site_list where status = '0'", function(err, site) {
-    console.log(site.title);
-    getPage(
-      site,
-      callPage
-    );
+  db.get("select * from site_list where status = '0' ORDER by date_create LIMIT 1", function(err, site) {
+    console.log(' New site search...');
+    if (site) {
+      console.log('site:', site.title);
+      getPage(
+        site,
+        callPage
+      );
+    } else {
+
+      SitePageDigger();
+    }
   });
 
 };

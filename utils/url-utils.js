@@ -1,6 +1,7 @@
 import URL from 'url-parse';
 
 export function parseUrl(url) {
+  // console.log(URL(url, true));
   return URL(url, true);
 };
 
@@ -15,5 +16,5 @@ export function getFulPath(url) {
   fullPath = fullPath.replace('//', '');
   fullPath = fullPath.replace('www.', '');
   
-  return fullPath.replace( getHost(url) + '/', '');
+  return fullPath.replace(getHost(url), '');
 }

@@ -5,12 +5,14 @@ import bodyParser from 'body-parser';
 import ApiRoutes from './ApiRoutes';
 import CrawlerApp from './CrawlerApp';
 
+import options from './options';
+
 export function Server() {
 
   const app = express();
   const httpServer = http.Server(app);
   const apiRoutes = ApiRoutes(express);
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || options.port;
 
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());

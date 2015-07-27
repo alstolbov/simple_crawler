@@ -25,6 +25,7 @@
     "express": "^4.13.1",
     "iconv-lite": "^0.4.11",
     "sqlite3": "^3.0.9",
+    "superagent": "^1.2.0",
     "traceurl": "^0.2.8",
     "url-parse": "^1.0.2"
   }
