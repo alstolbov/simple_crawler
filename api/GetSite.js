@@ -8,7 +8,7 @@ function clearUrl(url) {
 export default function AddSite (req, res) {
 
   const siteURL = URL(req.query.url || false, true);
-  const db = Options.db;
+  const db = Options.db();
   let clearURL;
   const resJson = {
     status: '',

@@ -11,7 +11,7 @@ export default function AddSite (req, res) {
 
   if (!req.body.url) {
       resJson.status = 404;
-      resJson.text = 'no site url';
+      resJson.text = 'no page url';
       res.json(resJson);
   } else {
     const url = parseUrl(req.body.url);

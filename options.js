@@ -4,5 +4,7 @@ var db = new sqlite3.Database('./db/DB.db');
 export default {
   host: 'localhost',
   port: '3000',
-  db: db
+  db: function () {
+    return new sqlite3.Database('./db/DB.db');
+  }
 };

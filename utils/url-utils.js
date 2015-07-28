@@ -6,15 +6,15 @@ export function parseUrl(url) {
 };
 
 export function getHost(url) {
-  const clearUrl = parseUrl(url).hostname;
-  return clearUrl.replace('www.', '');
+  // const clearUrl = parseUrl(url).hostname;
+  // return clearUrl.replace('www.', '');
+  return parseUrl(url).hostname;
 };
 
 export function getFulPath(url) {
   const clearUrl = parseUrl(url);
-  let fullPath = url.replace('http:', '');
-  fullPath = fullPath.replace('//', '');
-  fullPath = fullPath.replace('www.', '');
+  let fullPath = url.replace('http://', '');
+  // fullPath = fullPath.replace('www.', '');
   
   return fullPath.replace(getHost(url), '');
 }

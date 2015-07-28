@@ -3,7 +3,7 @@ import HtmlParser from './HtmlParser';
 import resToApi from './utils/resToApi.js';
 import Options from '../options';
 
-const db = Options.db;
+const db = Options.db();
 
 function getPage(site, next) {
   let page;
@@ -31,11 +31,16 @@ function callPage(site, page) {
       // console.log(data);
     });
     res.on('end', function () {
-      // console.log('html:', resHTML);
+      console.log('html:', resHTML);
       const parser = new HtmlParser(resHTML);
       const links = parser.getLinks();
-      if (links.length) {
-        db.run("UPDATE page_list SET status = 1, date_update = ? WHERE id = ?", new Date(), page.id);
+      db.run("UPDATE page_list SET status = 1, date_update = ? WHERE id = ?", new Date(), page.id);
+      if (!links.length) {
+        getPage(
+          site,
+          callPage
+        );
+      } else {
         resToApi.pushLink(
           {
             site: site,
