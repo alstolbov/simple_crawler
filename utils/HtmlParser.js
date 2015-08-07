@@ -8,8 +8,9 @@ export default class HtmlParser {
     this.Links = [];
   }
 
-  test () {
-    return '!!!';
+  getBodyText () {
+    const $ = this.$;
+    return $('body').text();
   }
 
   getLinks () {
@@ -25,8 +26,8 @@ export default class HtmlParser {
     const _this = this;
     const $ = this.$;
 
-    const minLength = minLength || 3;
-    const maxLength = maxLength || 20;
+    minLength = minLength || 3;
+    maxLength = maxLength || 20;
 
     const rowRes = {};
     const res = [];
@@ -47,9 +48,9 @@ export default class HtmlParser {
         } else {
           rowRes[word] = 1;
         }
-    }
+    });
 
-    for (prop in rowRes) {
+    for (let prop in rowRes) {
       res.push({
         word: prop,
         count: rowRes[prop]
@@ -59,7 +60,7 @@ export default class HtmlParser {
     return res.sort(function (a, b) {
       return b.count - a.count;
     });
-
+    // return rowRes;
   }
 
 };

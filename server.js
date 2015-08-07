@@ -3,7 +3,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import ApiRoutes from './ApiRoutes';
-import CrawlerApp from './CrawlerApp';
+// import CrawlerApp from './CrawlerApp';
+import SiteDigger from './crawler/SiteDigger';
 
 import options from './options';
 
@@ -25,6 +26,6 @@ export function Server() {
   httpServer.listen(port);
   console.log('Server listening on port', port);
 
-  CrawlerApp();
-
+  // CrawlerApp();
+  SiteDigger();
 }
