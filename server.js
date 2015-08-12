@@ -8,6 +8,8 @@ import SiteDigger from './crawler/SiteDigger';
 
 import options from './options';
 
+import listOfCom from './thematicCrawler/listOfCom';
+
 export function Server() {
 
   const app = express();
@@ -26,6 +28,6 @@ export function Server() {
   httpServer.listen(port);
   console.log('Server listening on port', port);
 
-  // CrawlerApp();
-  SiteDigger();
+  // SiteDigger();
+  listOfCom();
 }

@@ -71,7 +71,7 @@ function pageDigger (site, next) {
         addPage(site, page);
         new PagePinger({
           host: site.title,
-          page: page.title
+          path: page.title
         })
         .get(function (err, res) {
           if (err) {

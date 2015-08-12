@@ -6,5 +6,8 @@ export default {
   port: '3000',
   db: function () {
     return new sqlite3.Database('./db/DB.db');
+  },
+  listOfComDb: function () {
+    return new sqlite3.Database('./thematicCrawler/comList.db');
   }
 };
